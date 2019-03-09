@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <title>TypeScript HTML App</title>
+    <script src="./node_modules/three/build/three.js"></script>
+    <script src="app.js"></script>
+    <script id="vertexShader" type="x-shader/x-vertex">
+        varying vec3 wnormal;
+        void main()
+        {
+            wnormal = normalMatrix * normal;
+            vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+            gl_Position = projectionMatrix * mvPosition;
+        }
+    </script>
+    <script id="fragmentShader" type="x-shader/x-fragment">
+        struct DirectionalLight {
+            vec3 direction;
+            vec3 color;
+            int shadow;
+            float shadowBias;
+            float shadowRadius;
+            vec2 shadowMapSize;
+        };
+        uniform DirectionalLight directionalLights[ NUM_DIR_LIGHTS ];
+        uniform vec3 modelcolor;
+        varying vec3 wnormal;
+        void main()
+        {
+            float lambert = dot(wnormal, directionalLights[0].direction);
+            vec3 pcolor = modelcolor * lambert;
+            gl_FragColor = vec4( pcolor.xyz, 1.0 );
+        }
+    </script>
+    <script id="fragmentShader2" type="x-shader/x-fragment">
+        struct DirectionalLight {
+            vec3 direction;
+            vec3 color;
+            int shadow;
+            float shadowBias;
+            float shadowRadius;
+            vec2 shadowMapSize;
+        };
+        uniform DirectionalLight directionalLights[ NUM_DIR_LIGHTS ];
+        uniform vec3 modelcolor;
+        varying vec3 wnormal;
+        void main()
+        {
+            float lambert = max(dot(wnormal, directionalLights[0].direction),0.0)*0.5+0.5;
+            vec3 pcolor = modelcolor * lambert*lambert;
+            gl_FragColor = vec4( pcolor.xyz, 1.0 );
+        }
+    </script>
+</head>
+<body>
+    <div id="viewport"></div>
+    <h1>TypeScript HTML</h1>
+</body>
+</html>

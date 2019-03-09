@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <title>TypeScript HTML App</title>
+    <script src="./node_modules/three/build/three.js"></script>
+    <script src="app.js"></script>
+    <script id="vertexShader" type="x-shader/x-vertex">
+        varying vec3 vnormal;
+        varying vec3 pos;
+        void main()
+        {
+            vnormal=normal;
+          
+            vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+            gl_Position = projectionMatrix * mvPosition;
+            pos=position;
+            
+        }
+    </script>
+    <script id="fragmentShader" type="x-shader/x-fragment">
+        varying vec3 vnormal;
+        varying vec3 pos;
+        uniform float scale;
+        void main()
+        {
+            gl_FragColor = vec4( 0.5+pos.x/scale,0.5+pos.y/scale,0.5+pos.z/scale, 1.0);
+
+            }
+    </script>
+</head>
+
+<body>
+    <div id="viewport"></div>
+    <h1>TypeScript HTML</h1>
+</body>
+
+</html>
