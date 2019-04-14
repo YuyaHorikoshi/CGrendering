@@ -1,2 +1,0 @@
-# CGrendering
-education
